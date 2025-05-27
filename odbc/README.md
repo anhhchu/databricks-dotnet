@@ -26,11 +26,24 @@
      ```
    The driver will be installed in `/opt/simba/spark`.
 
+
+
 ## 2. Configure the ODBC DSN
 
 After installation, configure a DSN named `Databricks` using the ODBC Administrator (macOS/Windows) or by editing your `odbc.ini` file (Linux/macOS). Refer to the [Databricks ODBC documentation](https://docs.databricks.com/aws/en/assets/files/Simba-Apache-Spark-ODBC-Connector-Install-and-Configuration-Guide-231e7e0f44e5c1e164d8ffe590de337e.pdf) for details on DSN configuration, including authentication and server settings.
 
-## 3. Build and Run the Program
+## 3. Required NuGet Packages
+
+Install the following NuGet packages in the `odbc` directory (if not already present in the project file):
+
+```sh
+ dotnet add package Microsoft.Data.Analysis
+ dotnet add package Microsoft.Extensions.Configuration.Json
+ dotnet add package System.Data.Odbc
+ dotnet add package System.Net.Http.Json
+```
+
+## 4. Build and Run the Program
 
 1. Open a terminal and navigate to the `odbc` directory:
    ```sh

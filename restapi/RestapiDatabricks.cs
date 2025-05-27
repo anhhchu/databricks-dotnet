@@ -14,7 +14,7 @@ namespace Databricks.Dotnet.Demo
     {
         static async Task Main(string[] args)
         {
-            var databricksHost = "https://e2-demo-field-eng.cloud.databricks.com";
+            var databricksHost = "https://e2-demo-field-eng.cloud.databricks.com"; // TODO: specify the databricks host
             var sqlEndpoint = "/api/2.0/sql/statements/";
 
             var config = new ConfigurationBuilder()
@@ -22,7 +22,7 @@ namespace Databricks.Dotnet.Demo
                 .AddJsonFile("secrets.json", optional: false, reloadOnChange: true)
                 .Build();
 
-            var token = config["DatabricksToken"];
+            var token = config["DatabricksToken"]; // TODO: load DatabricksToken from secrets.json
 
             using var client = new HttpClient();
             client.BaseAddress = new Uri(databricksHost);
@@ -31,7 +31,7 @@ namespace Databricks.Dotnet.Demo
             var requestBody = new
             {
                 statement = "SELECT * FROM samples.tpch.orders LIMIT 10",
-                warehouse_id = "30d6e63b35f828c5"
+                warehouse_id = "30d6e63b35f828c5" // TODO: specify the warehouse id from the databricks workspace
             };
 
             var response = await client.PostAsJsonAsync(sqlEndpoint, requestBody);
