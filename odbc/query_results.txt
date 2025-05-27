@@ -1,0 +1,11 @@
+o_orderkey	o_custkey	o_orderstatus	o_totalprice	o_orderdate	o_orderpriority	o_clerk	o_shippriority	o_comment
+5611649	687736	O	51905.72	6/4/1996 12:00:00 AM	5-LOW	Clerk#000002954	0	ls! bold, regular accounts 
+5611650	513292	O	62845.59	2/28/1997 12:00:00 AM	5-LOW	Clerk#000002092	0	to boost ironically regular deposits. unusual, ironic exc
+5611651	395308	F	226256.25	3/5/1992 12:00:00 AM	1-URGENT	Clerk#000004123	0	its. regular foxes boost speci
+5611652	423847	O	141103.54	8/7/1995 12:00:00 AM	3-MEDIUM	Clerk#000003975	0	onic accounts. furiously permanent foxes slee
+5611653	90844	O	157430.11	8/14/1996 12:00:00 AM	5-LOW	Clerk#000004721	0	the carefully even th
+5611654	540176	O	110800.10	5/2/1998 12:00:00 AM	1-URGENT	Clerk#000004018	0	counts. slyly unusual asymptotes according to the brave instructions haggl
+5611655	733111	O	136877.11	2/16/1998 12:00:00 AM	1-URGENT	Clerk#000000614	0	urious deposits cajole deposits. ironic theodolites are furiously. carefully
+5611680	366310	O	198245.15	12/25/1996 12:00:00 AM	5-LOW	Clerk#000004898	0	 the slowly express requests. furiously close platel
+5611681	555686	F	240819.88	3/19/1992 12:00:00 AM	4-NOT SPECIFIED	Clerk#000004636	0	nding packages thrash. blithely even forges haggle blithely blithely even id
+5611682	412018	F	203722.37	9/13/1992 12:00:00 AM	3-MEDIUM	Clerk#000002208	0	y final instructions. slyly careful deposits haggle across the deposits.
