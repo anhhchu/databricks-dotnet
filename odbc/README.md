@@ -27,10 +27,54 @@
    The driver will be installed in `/opt/simba/spark`.
 
 
-
 ## 2. Configure the ODBC DSN
+Refer to [Databricks ODBC documentation](https://docs.databricks.com/aws/en/assets/files/Simba-Apache-Spark-ODBC-Connector-Install-and-Configuration-Guide-231e7e0f44e5c1e164d8ffe590de337e.pdf) for details on DSN configuration, including authentication and server settings.
 
-After installation, configure a DSN named `Databricks` using the ODBC Administrator (macOS/Windows) or by editing your `odbc.ini` file (Linux/macOS). Refer to the [Databricks ODBC documentation](https://docs.databricks.com/aws/en/assets/files/Simba-Apache-Spark-ODBC-Connector-Install-and-Configuration-Guide-231e7e0f44e5c1e164d8ffe590de337e.pdf) for details on DSN configuration, including authentication and server settings.
+Below examples are applicable to MacOS, you can choose either option to run the program:
+
+1. Use DSN connection through odbc.ini file
+
+After installation, configure a DSN named `Databricks` using the ODBC Administrator (macOS/Windows) or by editing your `odbc.ini` file (Linux/macOS) which looks similar to below: 
+
+```
+[ODBC Data Sources]
+Databricks = Simba Spark ODBC Driver
+
+[Databricks]
+Driver   = /Library/simba/spark/lib/libsparkodbc_sb64-universal.dylib
+Host     = xxxxxxxxx.databricks.com
+Port     = 443
+HTTPPath = /sql/1.0/warehouses/xxxxxxxxxxxxxxx
+AuthMech = 3
+UID      = token
+PWD      = dapixxxxxxxx
+SSL      = 1
+ThriftTransport = 2
+```
+
+2. Use DSN-less connection through odbcinst.ini file
+
+For example, provide below setting to odbcinst.ini file
+
+```
+[ODBC Drivers]
+Simba Spark ODBC Driver=Installed
+
+[Simba Spark ODBC Driver]
+Description=Simba Spark ODBC Driver DSN
+Driver=/Library/simba/spark/lib/libsparkodbc_sb64-universal.dylib
+```
+
+Then specify your DSN connection string in the program. The connection string is a comma-separated list of key-value pairs. The required key-value pairs are:
+   - Driver: the connector name specified in the odbcinst.inifile
+   - Host: the host of the data store
+   - Port: the port of the data store
+   - HTTPPath: the HTTP path of the data store
+   - AuthMech: the authentication mechanism
+
+```
+string dsn = "Driver=Simba Spark ODBC Driver;Host=xxxxx.databricks.com;Port=443;HTTPPath=/sql/1.0/warehouses/xxxxxx;AuthMech=3;UID=token;PWD=xxxx;SSL=1;ThriftTransport=2";
+```
 
 ## 3. Required NuGet Packages
 
