@@ -1,44 +1,70 @@
-// See https://aka.ms/new-console-template for more information
 using System;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
-using System.IO;
 
-namespace Databricks.Dotnet.Demo
+class Program
 {
-    class RestapiDatabricks
+    static readonly HttpClient client = new HttpClient();
+
+    static async Task Main()
     {
-        static async Task Main(string[] args)
+        IConfigurationRoot config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", false, true)
+            .AddUserSecrets<Program>()
+            .Build();
+
+        try
         {
-            var databricksHost = "https://e2-demo-field-eng.cloud.databricks.com"; // TODO: specify the databricks host
-            var sqlEndpoint = "/api/2.0/sql/statements/";
+            // Configuration
+            string baseUrl = $"https://{config["databricksInstanceName"]}/api/2.0/sql/statements";
+            string accessToken = config["accessToken"];
+            string warehouseId = config["warehouseId"];
 
-            var config = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("secrets.json", optional: false, reloadOnChange: true)
-                .Build();
-
-            var token = config["DatabricksToken"]; // TODO: load DatabricksToken from secrets.json
-
-            using var client = new HttpClient();
-            client.BaseAddress = new Uri(databricksHost);
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-
-            var requestBody = new
+            // Build JSON payload with parameters
+            var payload = new
             {
-                statement = "SELECT * FROM samples.tpch.orders LIMIT 10",
-                warehouse_id = "30d6e63b35f828c5" // TODO: specify the warehouse id from the databricks workspace
+                warehouse_id = warehouseId,
+                catalog = "tpcds",
+                schema = "sf_1000",
+                statement = "select * from store_sales limit :row_limit",
+                timeout_seconds = 600,
+                format = "JSON_ARRAY",
+                parameters = new[]
+                {
+                    new { name = "row_limit", value = "10", type = "INT" }
+                }
             };
 
-            var response = await client.PostAsJsonAsync(sqlEndpoint, requestBody);
-            response.EnsureSuccessStatusCode();
+            // Serialize to JSON
+            string jsonBody = JsonSerializer.Serialize(payload);
 
-            var responseBody = await response.Content.ReadAsStringAsync();
-            Console.WriteLine(responseBody);
+            // Configure request
+            var request = new HttpRequestMessage(HttpMethod.Post, baseUrl)
+            {
+                Content = new StringContent(jsonBody, Encoding.UTF8, "application/json")
+            };
+            request.Headers.Add("Authorization", $"Bearer {accessToken}");
+
+            // Execute request
+            var response = await client.SendAsync(request);
+            string responseBody = await response.Content.ReadAsStringAsync();
+
+            // Handle response
+            if (response.IsSuccessStatusCode)
+            {
+                Console.WriteLine("Success! Response:");
+                Console.WriteLine(responseBody);
+            }
+            else
+            {
+                Console.WriteLine($"Error {response.StatusCode}: {responseBody}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Exception: {ex.Message}");
         }
     }
-} 
+}
