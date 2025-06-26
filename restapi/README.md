@@ -2,22 +2,16 @@
 
 ## 1. Prerequisites
 
-- [.NET 9.0 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
+- [.NET 8.0 SDK](https://dotnet.microsoft.com/en-us/download)
 - A Databricks workspace and a valid Databricks personal access token
 
 ## 2. Required NuGet Packages
 
-Install the following NuGet packages in the `restapi` directory (if not already present in the project file):
+Run `dotnet restore` to install packages listed in the csproj file.
 
-```sh
- dotnet add package Microsoft.Data.Analysis
- dotnet add package Microsoft.Extensions.Configuration.Json
- dotnet add package System.Net.Http.Json
-```
+## 3. Create the secrets.json file
 
-## 3. Create the `secrets.json` file
-
-Create a `secrets.json` file in the `restapi` directory with the following content:
+Create a `secrets.json` file in the [appropriate directory](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-9.0&tabs=linux#how-the-secret-manager-tool-works) for your OS:
 
 ```json
 {
@@ -27,7 +21,11 @@ Create a `secrets.json` file in the `restapi` directory with the following conte
 
 Replace `<YOUR_DATABRICKS_PERSONAL_ACCESS_TOKEN>` with your actual Databricks token.
 
-## 4. Build and Run the Program
+## 4. Update the appsettings.json file
+
+Update `appsettings.json` with configs for your environment.
+
+## 5. Build and Run the Program
 
 1. Open a terminal and navigate to the `restapi` directory:
    ```sh

@@ -18,9 +18,9 @@ class Program
         try
         {
             // Configuration
-            string baseUrl = $"https://{config["databricksInstanceName"]}/api/2.0/sql/statements";
-            string accessToken = config["accessToken"];
-            string warehouseId = config["warehouseId"];
+            var baseUrl = $"https://{config["DatabricksInstanceName"]}/api/2.0/sql/statements";
+            var accessToken = config["DatabricksToken"];
+            var warehouseId = config["WarehouseId"];
 
             // Build JSON payload with parameters
             var payload = new
@@ -38,7 +38,7 @@ class Program
             };
 
             // Serialize to JSON
-            string jsonBody = JsonSerializer.Serialize(payload);
+            var jsonBody = JsonSerializer.Serialize(payload);
 
             // Configure request
             var request = new HttpRequestMessage(HttpMethod.Post, baseUrl)
@@ -49,7 +49,7 @@ class Program
 
             // Execute request
             var response = await client.SendAsync(request);
-            string responseBody = await response.Content.ReadAsStringAsync();
+            var responseBody = await response.Content.ReadAsStringAsync();
 
             // Handle response
             if (response.IsSuccessStatusCode)
