@@ -9,7 +9,7 @@
 
 Run `dotnet restore` to install packages listed in the csproj file.
 
-## 3. Create the secrets.json file
+## 3. Configure appsettings.json and user secrets
 
 Update the `appsettings.json` file in your project directory with DatabricksInstanceName and WarehouseId
 
