@@ -67,14 +67,18 @@ public class DatabricksODBCConnector
             .AddJsonFile("secrets.json", optional: false, reloadOnChange: true)
             .Build();
 
-        string pwd = config["DatabricksOdbcPassword"];
-        if (string.IsNullOrEmpty(pwd))
+        // Configuration
+        var baseUrl = config["DatabricksInstanceName"];
+        var accessToken = config["DatabricksToken"];
+        var warehouseId = config["WarehouseId"];
+
+        if (string.IsNullOrEmpty(accessToken))
         {
-            Console.WriteLine("DatabricksOdbcPassword is not set in secrets.json");
+            Console.WriteLine("DatabricksToken is not set in secrets.json");
             return;
         }
 
-        string dsn = "Driver=Simba Spark ODBC Driver;Host=e2-demo-field-eng.cloud.databricks.com;Port=443;HTTPPath=/sql/1.0/warehouses/30d6e63b35f828c5;AuthMech=3;UID=token;PWD=" + pwd + ";SSL=1;ThriftTransport=2";
+        string dsn = "Driver=Simba Spark ODBC Driver;Host="+baseUrl+";Port=443;HTTPPath=/sql/1.0/warehouses/"+warehouseId+";AuthMech=3;UID=token;PWD=" + accessToken + ";SSL=1;ThriftTransport=2";
 
         using (var writer = new System.IO.StreamWriter("query_results.txt"))
         {

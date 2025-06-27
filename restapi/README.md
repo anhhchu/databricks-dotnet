@@ -2,7 +2,7 @@
 
 ## 1. Prerequisites
 
-- [.NET 8.0 SDK](https://dotnet.microsoft.com/en-us/download)
+- [.NET 9.0 SDK](https://dotnet.microsoft.com/en-us/download)
 - A Databricks workspace and a valid Databricks personal access token
 
 ## 2. Required NuGet Packages
@@ -15,17 +15,13 @@ Create a `secrets.json` file in the [appropriate directory](https://learn.micros
 
 ```json
 {
-  "DatabricksToken": "<YOUR_DATABRICKS_PERSONAL_ACCESS_TOKEN>"
+    "DatabricksToken": "dapixxxxxxxxxx",
+    "DatabricksInstanceName": "xxxxx.cloud.databricks.com",
+    "WarehouseId": "xxxx"
 }
 ```
 
-Replace `<YOUR_DATABRICKS_PERSONAL_ACCESS_TOKEN>` with your actual Databricks token.
-
-## 4. Update the appsettings.json file
-
-Update `appsettings.json` with configs for your environment.
-
-## 5. Build and Run the Program
+## 4. Build and Run the Program
 
 1. Open a terminal and navigate to the `restapi` directory:
    ```sh

@@ -52,7 +52,7 @@ SSL      = 1
 ThriftTransport = 2
 ```
 
-2. Use DSN-less connection through odbcinst.ini file
+2. Or Use DSN-less connection through odbcinst.ini file
 
 For example, provide below setting to odbcinst.ini file
 
@@ -72,20 +72,24 @@ Then specify your DSN connection string in the program. The connection string is
    - HTTPPath: the HTTP path of the data store
    - AuthMech: the authentication mechanism
 
-```
-string dsn = "Driver=Simba Spark ODBC Driver;Host=xxxxx.databricks.com;Port=443;HTTPPath=/sql/1.0/warehouses/xxxxxx;AuthMech=3;UID=token;PWD=xxxx;SSL=1;ThriftTransport=2";
-```
+## 2.1 Configure secrets.json
 
+Create a `secrets.json` file in your project directory with the following structure:
+
+{
+    "DatabricksToken": "dapixxxxxxxxxx",
+    "DatabricksInstanceName": "xxxxx.cloud.databricks.com",
+    "WarehouseId": "xxxx"
+}
+
+Then specify the dsn for the ODBC connection in OdbcDatabricks.cs file
+
+```
+string dsn = "Driver=Simba Spark ODBC Driver;Host="+baseUrl+";Port=443;HTTPPath=/sql/1.0/warehouses/"+warehouseId+";AuthMech=3;UID=token;PWD=" + accessToken + ";SSL=1;ThriftTransport=2";
+```
 ## 3. Required NuGet Packages
 
-Install the following NuGet packages in the `odbc` directory (if not already present in the project file):
-
-```sh
- dotnet add package Microsoft.Data.Analysis
- dotnet add package Microsoft.Extensions.Configuration.Json
- dotnet add package System.Data.Odbc
- dotnet add package System.Net.Http.Json
-```
+Run `dotnet restore` to install packages listed in the csproj file.
 
 ## 4. Build and Run the Program
 
