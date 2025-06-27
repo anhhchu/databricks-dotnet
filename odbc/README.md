@@ -30,7 +30,7 @@
 ## 2. Configure the ODBC DSN
 Refer to [Databricks ODBC documentation](https://docs.databricks.com/aws/en/assets/files/Simba-Apache-Spark-ODBC-Connector-Install-and-Configuration-Guide-231e7e0f44e5c1e164d8ffe590de337e.pdf) for details on DSN configuration, including authentication and server settings.
 
-Below examples are applicable to MacOS, you can choose either option to run the program:
+Below examples are applicable to MacOS, you can choose either option (DSN or DSN-less) to run the program:
 
 1. Use DSN connection through odbc.ini file
 
@@ -52,7 +52,7 @@ SSL      = 1
 ThriftTransport = 2
 ```
 
-2. Use DSN-less connection through odbcinst.ini file
+2. Or Use DSN-less connection through odbcinst.ini file
 
 For example, provide below setting to odbcinst.ini file
 
@@ -72,20 +72,54 @@ Then specify your DSN connection string in the program. The connection string is
    - HTTPPath: the HTTP path of the data store
    - AuthMech: the authentication mechanism
 
-```
-string dsn = "Driver=Simba Spark ODBC Driver;Host=xxxxx.databricks.com;Port=443;HTTPPath=/sql/1.0/warehouses/xxxxxx;AuthMech=3;UID=token;PWD=xxxx;SSL=1;ThriftTransport=2";
+## 2.1. Configure appsettings.json and user secrets
+
+Update the `appsettings.json` file in your project directory with DatabricksInstanceName and WarehouseId
+
+```json
+{
+    "DatabricksInstanceName": "xxxxx.cloud.databricks.com",
+    "WarehouseId": "xxxx"
+}
 ```
 
+Create dotnet user secrets to store DatabricksToken as environment variable to authenticate and authorize user to query Databricks warehouse:
+
+1. Initialize user secrets for your project by running the following command. This will add a UserSecretsId to your project's .csproj file:
+
+```
+dotnet user-secrets init
+```
+
+2. Set the user secrets
+
+```
+dotnet user-secrets set "DatabricksToken" "your-databricks-access-token"
+```
+
+3. You can also list all the secrets with below command
+
+```
+dotnet user-secrets list
+```
+
+4. To use user secrets in code, specify AddUserSecrets in the main program config
+
+```
+IConfigurationRoot config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", false, true)
+            .AddUserSecrets<Program>()
+            .Build();
+```
+
+## 2.2. Specify the dsn for the ODBC connection in OdbcDatabricks.cs file
+
+```
+string dsn = "Driver=Simba Spark ODBC Driver;Host="+baseUrl+";Port=443;HTTPPath=/sql/1.0/warehouses/"+warehouseId+";AuthMech=3;UID=token;PWD=" + accessToken + ";SSL=1;ThriftTransport=2";
+```
 ## 3. Required NuGet Packages
 
-Install the following NuGet packages in the `odbc` directory (if not already present in the project file):
-
-```sh
- dotnet add package Microsoft.Data.Analysis
- dotnet add package Microsoft.Extensions.Configuration.Json
- dotnet add package System.Data.Odbc
- dotnet add package System.Net.Http.Json
-```
+Run `dotnet restore` to install packages listed in the csproj file.
 
 ## 4. Build and Run the Program
 
