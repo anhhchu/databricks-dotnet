@@ -8,7 +8,11 @@
 
 # dotenv files
 .env
+**/bin/*
+**/obj/*
 
+# output data files
+**/query_results.txt
 
 # User-specific files
 *.rsuser

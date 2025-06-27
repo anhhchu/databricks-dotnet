@@ -10,15 +10,17 @@ class Program
 
     static async Task Main()
     {
-        // IConfigurationRoot config = new ConfigurationBuilder()
-        //     .AddJsonFile("secrets.json", false, true)
-        //     .AddUserSecrets<Program>()
-        //     .Build();
-
- var config = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("secrets.json", optional: false, reloadOnChange: true)
+        // IConfigurationRoot represents a configuration root object that provides access to configuration values
+        // from multiple sources like JSON files, environment variables, command line args, etc.
+        IConfigurationRoot config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", false, true)
+            .AddUserSecrets<Program>()
             .Build();
+
+        // var config = new ConfigurationBuilder()
+        //             .SetBasePath(Directory.GetCurrentDirectory())
+        //             .AddJsonFile("secrets.json", optional: false, reloadOnChange: true)
+        //             .Build();
 
         try
         {

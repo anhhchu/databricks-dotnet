@@ -11,15 +11,44 @@ Run `dotnet restore` to install packages listed in the csproj file.
 
 ## 3. Create the secrets.json file
 
-Create a `secrets.json` file in the [appropriate directory](https://learn.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-9.0&tabs=linux#how-the-secret-manager-tool-works) for your OS:
+Update the `appsettings.json` file in your project directory with DatabricksInstanceName and WarehouseId
 
 ```json
 {
-    "DatabricksToken": "dapixxxxxxxxxx",
     "DatabricksInstanceName": "xxxxx.cloud.databricks.com",
     "WarehouseId": "xxxx"
 }
 ```
+
+Create dotnet user secrets to store DatabricksToken as environment variable to authenticate and authorize user to query Databricks warehouse:
+
+1. Initialize user secrets for your project by running the following command. This will add a UserSecretsId to your project's .csproj file:
+
+```
+dotnet user-secrets init
+```
+
+2. Set the user secrets
+
+```
+dotnet user-secrets set "DatabricksToken" "your-databricks-access-token"
+```
+
+3. You can also list all the secrets with below command
+
+```
+dotnet user-secrets list
+```
+
+4. To use user secrets in code, specify AddUserSecrets in the main program config
+
+```
+IConfigurationRoot config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", false, true)
+            .AddUserSecrets<Program>()
+            .Build();
+```
+
 
 ## 4. Build and Run the Program
 
