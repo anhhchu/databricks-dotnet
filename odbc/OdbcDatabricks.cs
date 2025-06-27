@@ -62,9 +62,9 @@ public class DatabricksODBCConnector
 {
     public void ExecuteQuery()
     {
-        var config = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("secrets.json", optional: false, reloadOnChange: true)
+        IConfigurationRoot config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", false, true)
+            .AddUserSecrets<Program>()
             .Build();
 
         // Configuration
@@ -78,11 +78,11 @@ public class DatabricksODBCConnector
             return;
         }
 
-        string dsn = "Driver=Simba Spark ODBC Driver;Host="+baseUrl+";Port=443;HTTPPath=/sql/1.0/warehouses/"+warehouseId+";AuthMech=3;UID=token;PWD=" + accessToken + ";SSL=1;ThriftTransport=2";
+        var DSN = "Driver=Simba Spark ODBC Driver;Host="+baseUrl+";Port=443;HTTPPath=/sql/1.0/warehouses/"+warehouseId+";AuthMech=3;UID=token;PWD=" + accessToken + ";SSL=1;ThriftTransport=2";
 
         using (var writer = new System.IO.StreamWriter("query_results.txt"))
         {
-            using (OdbcConnection connection = new OdbcConnection(dsn))
+            using (OdbcConnection connection = new OdbcConnection(DSN))
             {
                 connection.Open();
                 using (OdbcCommand command = new OdbcCommand("SELECT * FROM samples.tpch.orders LIMIT 100000", connection))
