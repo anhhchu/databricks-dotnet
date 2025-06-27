@@ -13,7 +13,7 @@ class Program
         // IConfigurationRoot represents a configuration root object that provides access to configuration values
         // from multiple sources like JSON files, environment variables, command line args, etc.
         IConfigurationRoot config = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json", false, true)
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
             .AddUserSecrets<Program>()
             .Build();
 

@@ -63,7 +63,7 @@ public class DatabricksODBCConnector
     public void ExecuteQuery()
     {
         IConfigurationRoot config = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json", false, true)
+            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
             .AddUserSecrets<Program>()
             .Build();
 
